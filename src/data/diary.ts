@@ -9,19 +9,15 @@ export interface DiaryItem {
 	location?: string;
 	mood?: string;
 	tags?: string[];
+	title?: string;
 }
 
-// 示例日记数据
+// 示例日记数据（本地占位）
 const diaryData: DiaryItem[] = [
-	{
-		id: 1,
-		content:
-			"The falling speed of cherry blossoms is five centimeters per second!",
-		date: "2025-01-15T10:30:00Z",
-		images: ["/images/diary/sakura.jpg", "/images/diary/1.jpg"],
-	},
 ];
 
+// 远程日记 API，返回的就是 DiaryItem[] 结构
+const REMOTE_DIARY_API = ""
 // 获取日记统计数据
 export const getDiaryStats = () => {
 	const total = diaryData.length;
@@ -36,15 +32,17 @@ export const getDiaryStats = () => {
 		hasImages,
 		hasLocation,
 		hasMood,
-		imagePercentage: Math.round((hasImages / total) * 100),
-		locationPercentage: Math.round((hasLocation / total) * 100),
-		moodPercentage: Math.round((hasMood / total) * 100),
+		imagePercentage: total ? Math.round((hasImages / total) * 100) : 0,
+		locationPercentage: total
+			? Math.round((hasLocation / total) * 100)
+			: 0,
+		moodPercentage: total ? Math.round((hasMood / total) * 100) : 0,
 	};
 };
 
 // 获取日记列表（按时间倒序）
 export const getDiaryList = (limit?: number) => {
-	const sortedData = diaryData.sort(
+	const sortedData = diaryData.slice().sort(
 		(a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
 	);
 
@@ -87,5 +85,43 @@ export const getAllTags = () => {
 	});
 	return Array.from(tags).sort();
 };
+
+// 保持异步 API 兼容性：优先使用远程 API，失败时回退本地数据
+export async function getDiaryListAsync(limit?: number): Promise<DiaryItem[]> {
+	try {
+		const res = await fetch(REMOTE_DIARY_API);
+		if (!res.ok) throw new Error(`HTTP ${res.status}`);
+		const data = (await res.json()) as DiaryItem[];
+		const sorted = data
+			.slice()
+			.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+		return limit && limit > 0 ? sorted.slice(0, limit) : sorted;
+	} catch (e) {
+		console.warn("[diary] Remote fetch failed, use local diaryData:", e);
+		return getDiaryList(limit);
+	}
+}
+
+export async function getDiaryStatsAsync(): Promise<ReturnType<typeof getDiaryStats>> {
+	try {
+		const list = await getDiaryListAsync();
+		const total = list.length;
+		const hasImages = list.filter((item) => item.images && item.images.length > 0).length;
+		const hasLocation = list.filter((item) => item.location).length;
+		const hasMood = list.filter((item) => item.mood).length;
+		return {
+			total,
+			hasImages,
+			hasLocation,
+			hasMood,
+			imagePercentage: total ? Math.round((hasImages / total) * 100) : 0,
+			locationPercentage: total ? Math.round((hasLocation / total) * 100) : 0,
+			moodPercentage: total ? Math.round((hasMood / total) * 100) : 0,
+		};
+	} catch (e) {
+		console.warn("[diary] Remote stats failed, use local stats:", e);
+		return getDiaryStats();
+	}
+}
 
 export default diaryData;

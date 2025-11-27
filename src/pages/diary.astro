@@ -1,6 +1,6 @@
 ---
 import { siteConfig } from "../config";
-import { getDiaryList, getDiaryStats } from "../data/diary";
+import { getDiaryListAsync, getDiaryStatsAsync } from "../data/diary";
 import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
@@ -10,9 +10,9 @@ if (!siteConfig.featurePages.diary) {
 	return Astro.redirect("/404/");
 }
 
-// 获取日记数据
-const moments = getDiaryList();
-const diaryStats = getDiaryStats();
+// 获取日记数据（支持 API，失败时回退本地）
+const moments = await getDiaryListAsync();
+const diaryStats = await getDiaryStatsAsync();
 
 // 时间格式化函数
 function formatTime(dateString: string): string {
@@ -263,5 +263,3 @@ function formatTime(dateString: string): string {
 		}
 	}
 </style>
-
-

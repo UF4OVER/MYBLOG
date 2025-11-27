@@ -77,27 +77,11 @@ let volumeBar: HTMLElement;
 const localPlaylist = [
 	{
 		id: 1,
-		title: "ひとり上手",
-		artist: "Kaya",
-		cover: "assets/music/cover/hitori.jpg",
-		url: "assets/music/url/hitori.mp3",
+		title: "I Really Want to Stay at Your House",
+		artist: "Samuel Kim",
+		cover: "assets/music/cover/I Really Want to Stay at Your House-Samuel Kim.jpg",
+        url: "assets/music/url/I Really Want to Stay at Your House-Samuel Kim.mp3",
 		duration: 240,
-	},
-	{
-		id: 2,
-		title: "眩耀夜行",
-		artist: "スリーズブーケ",
-		cover: "assets/music/cover/xryx.jpg",
-		url: "assets/music/url/xryx.mp3",
-		duration: 180,
-	},
-	{
-		id: 3,
-		title: "春雷の頃",
-		artist: "22/7",
-		cover: "assets/music/cover/cl.jpg",
-		url: "assets/music/url/cl.mp3",
-		duration: 200,
 	},
 ];
 

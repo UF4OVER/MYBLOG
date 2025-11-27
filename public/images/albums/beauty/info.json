@@ -1,0 +1,10 @@
+{
+	"title": "Some beauty",
+	"hidden": false,
+	"description": "The world is vast, and you have to go explore it.",
+	"date": "2025-08-01",
+	"location": "NULL",
+	"tags": ["beauty", "photo", "reality"],
+	"layout": "masonry",
+	"columns": 3
+}

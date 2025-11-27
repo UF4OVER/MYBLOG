@@ -278,10 +278,6 @@ if (siteConfig.font) {
 
 		<slot name="head"></slot>
 
-		<!-- Pio 看板娘样式 - 仅在启用时加载 -->
-		{pioConfig.enable && <link rel="stylesheet" href="/pio/static/pio.css" />}
-
-		<link rel="alternate" type="application/rss+xml" title={profileConfig.name} href={`${Astro.site}rss.xml`}/>
 
 		<!-- Umami Analytics -->
 		{umamiEnabled && umamiScripts && <Fragment set:html={umamiScripts} />}
@@ -300,10 +296,7 @@ if (siteConfig.font) {
 		
 		<!-- Music Player - 仅在启用时加载 -->
 		{musicPlayerConfig.enable && <MusicPlayer client:load />}
-		
-		<!-- Pio 看板娘组件 - 仅在启用时加载 -->
-		{pioConfig.enable && <Pio client:load />}
-		
+
 		<!-- increase the page height during page transition to prevent the scrolling animation from jumping -->
 		<div id="page-height-extend" class="hidden h-[300vh]"></div>
 	</body>

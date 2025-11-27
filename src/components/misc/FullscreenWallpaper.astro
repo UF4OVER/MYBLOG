@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import { siteConfig } from "../../config";
 import type { FullscreenWallpaperConfig } from "../../types/config";
 
@@ -110,10 +109,10 @@ const positionClass = getPositionClass(position);
 	style={`z-index: ${zIndex}; opacity: ${opacity};`}
 	data-fullscreen-wallpaper
 >
-<script is:inline>
+<script is:inline define:vars={{ defaultWallpaperMode: siteConfig.wallpaperMode.defaultMode }}>
 // 根据 localStorage 立即设置全屏壁纸初始显示状态，避免闪烁
 (function() {
-	const wallpaperMode = localStorage.getItem('wallpaperMode') || 'banner';
+	const wallpaperMode = localStorage.getItem('wallpaperMode') || defaultWallpaperMode;
 	const fullscreenWallpaper = document.currentScript.parentElement;
 	if (wallpaperMode !== 'fullscreen') {
 		fullscreenWallpaper.style.display = 'none';
