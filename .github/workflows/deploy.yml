@@ -2,7 +2,7 @@ name: Build & Deploy Astro Blog to Linux Server
 
 on:
   push:
-    branches: [main]  # 如果你用的是 master 分支请改为 master
+    branches: [master]  # 如果你用的是 master 分支请改为 master
 
 jobs:
   build-and-deploy:
