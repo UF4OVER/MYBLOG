@@ -1,8 +1,8 @@
 name: Build & Deploy Astro Blog to Linux Server
-
+      
 on:
   push:
-    branches: [master]  # 如果你用的是 master 分支请改为 master
+    branches: [master]
 
 jobs:
   build-and-deploy:
@@ -17,11 +17,16 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm install
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Install dependencies (pnpm)
+        run: pnpm install
 
       - name: Build Astro site
-        run: npm run build
+        run: pnpm run build
 
       - name: Deploy via rsync over SSH
         uses: burnett01/rsync-deployments@7.0.2
